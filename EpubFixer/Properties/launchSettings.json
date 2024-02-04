@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "EpubFixer": {
+      "commandName": "Project",
+      "commandLineArgs": "E:\\Programming\\Projects\\EpubFixer\\Witcher_at_Hogwarts.epub E:\\Programming\\Projects\\EpubFixer\\DxD_The_Dragon_Oppai.epub E:\\Programming\\Projects\\EpubFixer\\Harry_Potter_and_A_Galaxy_Far_Far_Away.epub"
+    }
+  }
+}
