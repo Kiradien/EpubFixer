@@ -29,23 +29,12 @@ namespace EpubFixer
                 foreach (string fileName in epubs)
                 {
                     StartLoop:
-                    updatedFiles = 0;
 
                     try
                     {
                         ContentManager contentManager = new ContentManager(fileName);
-                        using (var archive = contentManager.Open())
-                        {
-                            Console.WriteLine("Zipfile Opened");
+                        updatedFiles = contentManager.Run();
 
-                            var items = archive.Entries.Where(item => item.FullName.StartsWith("OEBPS/Text/", true, null) && item.FullName.Contains("htm")).ToList();
-
-                            foreach (ZipArchiveEntry entry in items)
-                            {
-                                Console.WriteLine($"Parsing: {entry.Name}");
-                                updatedFiles += contentManager.UpdateFile(archive, entry.FullName) ? 1 : 0;
-                            }
-                        }
                         Console.WriteLine($"Updated {updatedFiles} entries.");
                         Console.WriteLine("- - - - - - - - - - - - - - -\r\n");
                         summarySB.AppendLine($"Summary: [{fileName}] has a total of {updatedFiles} updates.");
@@ -58,6 +47,7 @@ namespace EpubFixer
                         Console.WriteLine("Retry? Y/n");
                         var result = Console.ReadKey().KeyChar.ToString().ToLower();
                         var retry = result == "y" || result == " ";
+                        //Really lazy way to retry on IOException. Recursive Method is superior.
                         if (retry) goto StartLoop;
                     }
                 }
