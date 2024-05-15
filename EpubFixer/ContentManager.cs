@@ -20,7 +20,6 @@ namespace EpubFixer
         public ContentManager(string fileName) 
         { 
             this._zipArchiveFileName = fileName;
-            //zipArchive = ZipFile.Open(fileName, ZipArchiveMode.Update);
         }
 
         public ZipArchive Open()
@@ -28,7 +27,27 @@ namespace EpubFixer
             return ZipFile.Open(_zipArchiveFileName, ZipArchiveMode.Update);
         }
 
+        /// <summary>
+        /// Core runtime logic for opening, navigating and cleaning up an epub.
+        /// </summary>
+        /// <param name="updatedFiles">Input/output data. Could be a return value instead.</param>
+        public int Run()
+        {
+            int updatedFiles = 0;
+            using (var archive = this.Open())
+            {
+                Console.WriteLine("Zipfile Opened");
 
+                var items = archive.Entries.Where(item => item.FullName.StartsWith("OEBPS/Text/", true, null) && item.FullName.Contains("htm")).ToList();
+
+                foreach (ZipArchiveEntry entry in items)
+                {
+                    Console.WriteLine($"Parsing: {entry.Name}");
+                    updatedFiles += this.UpdateFile(archive, entry.FullName) ? 1 : 0;
+                }
+            }
+            return updatedFiles;
+        }
 
         public bool UpdateFile(ZipArchive archive, string entryName)
         {
