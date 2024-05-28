@@ -30,7 +30,7 @@ namespace EpubFixer
         /// <summary>
         /// Core runtime logic for opening, navigating and cleaning up an epub.
         /// </summary>
-        /// <param name="updatedFiles">Input/output data. Could be a return value instead.</param>
+        /// <returns>Filecount of affected files.</returns>
         public int Run()
         {
             int updatedFiles = 0;
