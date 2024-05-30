@@ -64,7 +64,7 @@ namespace EpubFixer
                 GenericFixes.FixContent(ref content, "&lt;br\\s*/\\s*&gt;", " <br />", ref totalOffenses);
                 this.StripWatermarks(ref content, ref totalOffenses);
                 //TODO:: Consider DOM Parser replacement for some of these.
-                GenericFixes.FixContent(ref content, "<hr\\s*/?>|<hr [a-z =\"\\d\\-]{0,30}/?>", "<p> - - - - - - - - - - </p>", ref totalOffenses);
+                GenericFixes.FixContent(ref content, "<hr\\s*/?>|<hr [a-z =\"\\d\\-]{0,30}/?>", "<p>| - - - - - - - - - - |</p>", ref totalOffenses);
                 GenericFixes.FixContent(ref content, "∼", "~", ref totalOffenses);
                 GenericFixes.FixContent(ref content, "(\\w)`(\\w)", "$1'$2", ref totalOffenses);
                 GenericFixes.FixContent(ref content, "🎶", "♪", ref totalOffenses);
