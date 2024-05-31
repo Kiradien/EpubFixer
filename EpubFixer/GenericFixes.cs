@@ -38,18 +38,18 @@ namespace EpubFixer
 
             if (offenseCount > 0)
             {
-                System.Text.RegularExpressions.Match match;
-                do
+                Match match = Regex.Match(content, regexSearch, RegexOptions.IgnoreCase);
+                while (match.Success)
                 {
-                    match = Regex.Match(content, regexSearch, RegexOptions.IgnoreCase);
+                    if (match.Success && !Regex.Match(match.Value, regexReplace, RegexOptions.IgnoreCase | RegexOptions.IgnorePatternWhitespace).Success)
+                    {
+                        content = content.Replace(match, regexReplace);
+                        totalOffenses++;
 
-                    if (match.Success && Regex.Match(match.Value, regexReplace, RegexOptions.IgnoreCase | RegexOptions.IgnorePatternWhitespace).Success)
-                        break;
-                    //Basic breaking condition; may need more developed regexReplace in the future with replaceVals set.
-                    totalOffenses += offenseCount;
-                    content = Regex.Replace(content, regexSearch, regexReplace, RegexOptions.IgnoreCase);
-                    offenseCount = Regex.Count(content, regexSearch, RegexOptions.IgnoreCase);
-                } while (offenseCount > 0);
+                        if (offenseCount-- > 0) match = Regex.Match(content, regexSearch, RegexOptions.IgnoreCase); //re-cycle matches for updated indexing.
+                    }
+                    match = match.NextMatch();
+                }
             }
             return content;
         }
